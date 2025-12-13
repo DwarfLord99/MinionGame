@@ -991,6 +991,74 @@
                     "isPartOfComposite": false
                 }
             ]
+        },
+        {
+            "name": "Minion",
+            "id": "0b726e6f-2332-4f99-b90a-2e50a90ef402",
+            "actions": [
+                {
+                    "name": "Sweep",
+                    "type": "Value",
+                    "id": "f778e2d4-61d0-458a-ab1e-32746a0063b1",
+                    "expectedControlType": "Vector2",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Send",
+                    "type": "Button",
+                    "id": "a98d437e-a01c-42ce-8c60-887ca9cbc216",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Recall",
+                    "type": "Button",
+                    "id": "217694f7-2a48-4cd4-910f-f0136dd5ca6e",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "d754d543-899f-497e-9dcb-5032a1d00ac0",
+                    "path": "<Gamepad>/rightStick",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Gamepad",
+                    "action": "Sweep",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1063be28-d3f6-413e-9199-d46b8b4f33cc",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "Send",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "49f2aa48-578c-415d-82a7-7f832edae228",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": ";Keyboard&Mouse",
+                    "action": "Recall",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         }
     ],
     "controlSchemes": [

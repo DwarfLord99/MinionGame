@@ -842,6 +842,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3516cfbaaebfe7a409e424c3f608d05e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MinionController
+  moveSpeed: 5
+  rb: {fileID: 1427883754}
 --- !u!4 &1427883759
 Transform:
   m_ObjectHideFlags: 0
