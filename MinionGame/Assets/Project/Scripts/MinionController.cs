@@ -46,9 +46,32 @@ public class MinionController : MonoBehaviour
     void FixedUpdate()
     {
         if(minionSweep.inProgress)
+        {
             HandleSweep();
+        }
+        else if(minionSend.inProgress && minionRecall.inProgress)
+        {
+            HandleMouseSweep();
+        }
         else
+        {
             isSweeping = false;
+        }
+    }
+
+    private void HandleMouseSweep()
+    {
+        // Raycast from mouse position to ground plane
+        Ray ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
+        Plane groundPlane = new Plane(Vector3.up, Vector3.zero);
+        if (groundPlane.Raycast(ray, out float enter))
+        {
+            Vector3 hitPoint = ray.GetPoint(enter);
+            Vector3 direction = (hitPoint - transform.position).normalized;
+            Vector3 velocity = new Vector3(direction.x, 0f, direction.z) * moveSpeed;
+            rb.linearVelocity = velocity;
+            isSweeping = true;
+        }
     }
 
     private void HandleSweep()
