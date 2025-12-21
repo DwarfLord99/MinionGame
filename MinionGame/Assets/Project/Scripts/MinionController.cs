@@ -11,6 +11,9 @@ public class MinionController : MonoBehaviour
     [Header("Minion Components")]
     [SerializeField] private Rigidbody rb;
     [SerializeField] private Transform playerTransform;
+    [SerializeField] private Animator animator;
+    [SerializeField] private PlayerController playerController;
+
 
     private InputAction minionSweep;
     private InputAction minionSend;
@@ -36,6 +39,10 @@ public class MinionController : MonoBehaviour
             // Move towards player
             transform.position = Vector3.MoveTowards(transform.position, playerTransform.position, moveSpeed * Time.deltaTime);
 
+            // Update animator parameters
+            Vector3 moveDirection = (playerTransform.position - transform.position).normalized;
+            animator.SetFloat("Speed", moveDirection.magnitude * moveSpeed);
+
             // Rotate minion to face player
             Vector3 directionToPlayer = (playerTransform.position - transform.position).normalized;
             if (directionToPlayer != Vector3.zero)
@@ -44,10 +51,12 @@ public class MinionController : MonoBehaviour
                 rb.rotation = Quaternion.Slerp(rb.rotation, targetRotation, Time.deltaTime * 10f);
             }
         }
-        else if (distanceToPlayer <= followRange && !isSweeping)
+
+        if (distanceToPlayer <= followRange && playerController.playerSpeed <= 0.0f && !isSweeping)
         {
             // Stop moving when within range
             rb.linearVelocity = Vector3.zero;
+            animator.SetFloat("Speed", 0f);
         }
     }
 
@@ -79,6 +88,9 @@ public class MinionController : MonoBehaviour
             Vector3 velocity = new Vector3(direction.x, 0f, direction.z) * moveSpeed;
             rb.linearVelocity = velocity;
 
+            // Update animator parameters
+            animator.SetFloat("Speed", velocity.magnitude);
+
             // Rotate minion to face movement direction
             if (direction != Vector3.zero)
             {
@@ -97,6 +109,9 @@ public class MinionController : MonoBehaviour
         Vector3 velocity = moveDirection * moveSpeed;
 
         rb.linearVelocity = velocity;
+
+        // Update animator parameters
+        animator.SetFloat("Speed", velocity.magnitude);
 
         // Rotate minion to face movement direction if moving
         if (moveDirection != Vector3.zero)

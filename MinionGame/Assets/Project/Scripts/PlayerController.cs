@@ -8,6 +8,9 @@ public class PlayerController : MonoBehaviour
 
     [Header("Player Components")]
     [SerializeField] private Rigidbody rb;
+    [SerializeField] private Animator animator;
+
+    public float playerSpeed = 0.0f;
 
     private InputAction moveAction;
 
@@ -33,6 +36,10 @@ public class PlayerController : MonoBehaviour
         Vector3 velocity = moveDirection * moveSpeed;
 
         rb.linearVelocity = velocity;
+        playerSpeed = velocity.magnitude;
+
+        // Update animator parameters
+        animator.SetFloat("Speed", velocity.magnitude);
 
         // Rotate player to face movement direction if moving
         if (moveDirection != Vector3.zero)
