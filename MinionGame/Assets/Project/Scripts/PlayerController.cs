@@ -33,5 +33,12 @@ public class PlayerController : MonoBehaviour
         Vector3 velocity = moveDirection * moveSpeed;
 
         rb.linearVelocity = velocity;
+
+        // Rotate player to face movement direction if moving
+        if (moveDirection != Vector3.zero)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
+            rb.rotation = Quaternion.Slerp(rb.rotation, targetRotation, Time.fixedDeltaTime * 10f);
+        }
     }
 }

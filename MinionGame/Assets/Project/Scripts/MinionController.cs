@@ -35,6 +35,14 @@ public class MinionController : MonoBehaviour
         {
             // Move towards player
             transform.position = Vector3.MoveTowards(transform.position, playerTransform.position, moveSpeed * Time.deltaTime);
+
+            // Rotate minion to face player
+            Vector3 directionToPlayer = (playerTransform.position - transform.position).normalized;
+            if (directionToPlayer != Vector3.zero)
+            {
+                Quaternion targetRotation = Quaternion.LookRotation(directionToPlayer);
+                rb.rotation = Quaternion.Slerp(rb.rotation, targetRotation, Time.deltaTime * 10f);
+            }
         }
         else if (distanceToPlayer <= followRange && !isSweeping)
         {
@@ -70,6 +78,14 @@ public class MinionController : MonoBehaviour
             Vector3 direction = (hitPoint - transform.position).normalized;
             Vector3 velocity = new Vector3(direction.x, 0f, direction.z) * moveSpeed;
             rb.linearVelocity = velocity;
+
+            // Rotate minion to face movement direction
+            if (direction != Vector3.zero)
+            {
+                Quaternion targetRotation = Quaternion.LookRotation(direction);
+                rb.rotation = Quaternion.Slerp(rb.rotation, targetRotation, Time.fixedDeltaTime * 10f);
+            }
+
             isSweeping = true;
         }
     }
@@ -81,6 +97,14 @@ public class MinionController : MonoBehaviour
         Vector3 velocity = moveDirection * moveSpeed;
 
         rb.linearVelocity = velocity;
+
+        // Rotate minion to face movement direction if moving
+        if (moveDirection != Vector3.zero)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
+            rb.rotation = Quaternion.Slerp(rb.rotation, targetRotation, Time.fixedDeltaTime * 10f);
+        }
+
         isSweeping = true;
     }
 }
