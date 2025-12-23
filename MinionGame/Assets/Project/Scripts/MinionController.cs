@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -22,6 +21,7 @@ public class MinionController : MonoBehaviour
     private InputAction minionRecall;
 
     private bool isSweeping = false;
+    private bool isSending = false;
     private bool isReturningDelay = false;
 
     void Start()
@@ -29,11 +29,6 @@ public class MinionController : MonoBehaviour
         minionSweep = InputSystem.actions.FindAction("Sweep");
         minionSend = InputSystem.actions.FindAction("Send");
         minionRecall = InputSystem.actions.FindAction("Recall");
-    }
-
-    void Update()
-    {
-        
     }
 
     void FixedUpdate()
@@ -46,14 +41,19 @@ public class MinionController : MonoBehaviour
         {
             HandleMouseSweep();
         }
+        else if(minionSend.IsPressed() || isSending && !isReturningDelay)
+        {
+            HandleMinionCharge();
+        }
         else
         {
-            if(isSweeping)
+            if (isSweeping)
             {
                 // Sweep just ended, start return delay
                 StartCoroutine(ReturnDelay());
             }
             isSweeping = false;
+            isSending = false;
 
             HandleFollowAndReturn();
         }
@@ -119,7 +119,7 @@ public class MinionController : MonoBehaviour
     {
         float distanceToPlayer = Vector3.Distance(transform.position, playerTransform.position);
 
-        if (!isReturningDelay)
+        if (!isReturningDelay && !isSending)
         {
             if (playerController.playerSpeed > 0.0f)
             {
@@ -164,4 +164,32 @@ public class MinionController : MonoBehaviour
         }
     }
 
+    private void HandleMinionCharge()
+    {
+        // Send minion forward until it hits an obstacle. Minion cannot be controlled at this time
+
+        Vector3 moveDirection = new Vector3(0f, 0f, 1f).normalized;
+        Vector3 velocity = moveDirection * moveSpeed;
+
+        rb.linearVelocity = velocity;
+
+        // Rotate minion to face forward direction
+        Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
+        rb.rotation = Quaternion.Slerp(rb.rotation, targetRotation, Time.fixedDeltaTime * 10f);
+
+        // Update animator parameters
+        animator.SetFloat("Speed", 1f);
+
+        isSending = true;
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        // If minion collides with an obstacle, stop moving, then return to minion point after a delay
+        if (collision.gameObject.CompareTag("Wall"))
+        {
+            isSending = false;
+            StartCoroutine(ReturnDelay());
+        }
+    }
 }
