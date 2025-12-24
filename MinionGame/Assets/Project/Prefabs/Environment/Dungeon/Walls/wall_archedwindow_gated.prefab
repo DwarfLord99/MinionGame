@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4696698016517982517}
   - component: {fileID: 3198737339284679485}
   - component: {fileID: 2659320347487365068}
+  - component: {fileID: -1191659827307249255}
   m_Layer: 0
   m_Name: wall_archedwindow_gated
   m_TagString: Untagged
@@ -90,3 +91,25 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &-1191659827307249255
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7254843249846134350}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 7125925254588785975, guid: 5471c017b5d03954c9632713ac5f2323, type: 3}
