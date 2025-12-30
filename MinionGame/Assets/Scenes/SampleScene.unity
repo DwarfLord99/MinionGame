@@ -2779,10 +2779,26 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3944441484482283668, guid: b0556b77e56cdaf48b29c58f0ca2049a, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: -8468983757882266563, guid: c27c5db4c2347d2439441ac66839a20b, type: 3}
     - target: {fileID: 4693802364873624710, guid: b0556b77e56cdaf48b29c58f0ca2049a, type: 3}
       propertyPath: m_Name
       value: PLAYER
       objectReference: {fileID: 0}
+    - target: {fileID: 4883363721064492311, guid: b0556b77e56cdaf48b29c58f0ca2049a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7092032633136974624, guid: b0556b77e56cdaf48b29c58f0ca2049a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7362188432101053792, guid: b0556b77e56cdaf48b29c58f0ca2049a, type: 3}
+      propertyPath: virtualCamera
+      value: 
+      objectReference: {fileID: 285660846}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
