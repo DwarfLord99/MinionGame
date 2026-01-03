@@ -17,13 +17,26 @@ public class PlayerController : MonoBehaviour
     public float playerSpeed = 0.0f;
     private float cameraRotSpeed = 720f;
 
+    private CinemachineTransposer transposer;
+    private Vector3 initialFollowOffset;
+
     private InputAction moveAction;
     private InputAction targetAction;
+
+    private Coroutine cameraLerp;
 
     void Start()
     {
         moveAction = InputSystem.actions.FindAction("Move");
         targetAction = InputSystem.actions.FindAction("Target");
+
+        transposer = virtualCamera.GetCinemachineComponent<CinemachineTransposer>();
+        initialFollowOffset = transposer.m_FollowOffset;
+
+        if(transposer != null)
+        {
+            transposer.m_FollowOffset = new Vector3(0, 6, -8);
+        }
     }
 
     void Update()
@@ -81,13 +94,45 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    IEnumerator LerpCameraOffset(Vector3 targetOffset, float duration = 0.2f)
+    {
+        Vector3 startOffset = transposer.m_FollowOffset;
+        float elapsed = 0f;
+
+        while (elapsed < duration)
+        {
+            transposer.m_FollowOffset = Vector3.Lerp(startOffset, targetOffset, elapsed / duration);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+        transposer.m_FollowOffset = targetOffset;
+    }
+
     IEnumerator RotateToTarget(Quaternion targetRotation)
     {
-        while (Quaternion.Angle(virtualCamera.transform.rotation, targetRotation) > 0.1f)
+        while (Quaternion.Angle(transform.rotation, targetRotation) > 0.1f)
         {
-            virtualCamera.transform.rotation = Quaternion.RotateTowards(virtualCamera.transform.rotation, 
-                targetRotation, cameraRotSpeed * Time.deltaTime);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, cameraRotSpeed * Time.deltaTime);
+            yield return null;
         }
-        yield return null;
+
+        // Now reset the camera behind the player
+        if (transposer != null)
+        {
+            // Get the current offset's distance (XZ plane) and height (Y)
+            float distance = new Vector2(transposer.m_FollowOffset.x, transposer.m_FollowOffset.z).magnitude;
+            float height = transposer.m_FollowOffset.y;
+
+            // Calculate the new offset so the camera is behind the player
+            Vector3 newOffset = Quaternion.Euler(0, transform.eulerAngles.y, 0) * new Vector3(0, 0, -distance);
+            newOffset.y = height;
+
+            if (cameraLerp != null)
+            {
+                StopCoroutine(cameraLerp);
+            }
+
+            cameraLerp = StartCoroutine(LerpCameraOffset(newOffset));
+        }
     }
 }
